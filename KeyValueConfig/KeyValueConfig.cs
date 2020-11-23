@@ -4,10 +4,10 @@ using System.IO;
 
 namespace KeyValueConfig
 {
-    public class KeyValueConfig
+    public class Config
     {
         private Dictionary<string, string> dict = new Dictionary<string, string>();
-        public KeyValueConfig(string path)
+        public Config(string path)
         {
             KeyValueParser parser = new KeyValueParser(path);
             dict = parser.Parse();
