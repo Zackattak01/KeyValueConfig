@@ -7,9 +7,11 @@ namespace KeyValueConfig
     public class Config
     {
         private Dictionary<string, string> dict = new Dictionary<string, string>();
+
+        private KeyValueParser parser;
         public Config(string path)
         {
-            KeyValueParser parser = new KeyValueParser(path);
+            parser = new KeyValueParser(path);
             dict = parser.Parse();
         }
 
@@ -18,5 +20,8 @@ namespace KeyValueConfig
 
         public string GetValue(string key)
             => dict[key];
+
+        public void Reload()
+            => dict = parser.Parse();
     }
 }
