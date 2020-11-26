@@ -8,10 +8,10 @@ namespace KeyValueConfig
     {
         private Dictionary<string, string> dict = new Dictionary<string, string>();
 
-        private KeyValueParser parser;
+        private ConfigParser parser;
         public Config(string path)
         {
-            parser = new KeyValueParser(path);
+            parser = new ConfigParser(path);
             dict = parser.Parse();
         }
 
