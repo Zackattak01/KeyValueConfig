@@ -13,7 +13,7 @@ namespace KeyValueConfig
         public KeyValueConfigGroup(string key)
         {
             Key = key;
-
+            KeyValuePairs = new Dictionary<string, string>();
         }
 
         internal void Add(string key, string value)
