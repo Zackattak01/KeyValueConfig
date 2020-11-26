@@ -8,11 +8,13 @@ namespace KeyValueConfig
     {
         private Dictionary<string, string> dict = new Dictionary<string, string>();
 
-        private KeyValueParser parser;
+        private Dictionary<string, KeyValueConfigGroup> groups = new Dictionary<string, KeyValueConfigGroup>();
+
+        private ConfigParser parser;
         public Config(string path)
         {
-            parser = new KeyValueParser(path);
-            dict = parser.Parse();
+            parser = new ConfigParser(path);
+            Reload();
         }
 
         public bool HasKey(string key)
@@ -21,7 +23,18 @@ namespace KeyValueConfig
         public string GetValue(string key)
             => dict[key];
 
+        public bool HasGroupKey(string key)
+            => groups.ContainsKey(key);
+
+        public KeyValueConfigGroup GetGroup(string key)
+            => groups[key];
+
         public void Reload()
-            => dict = parser.Parse();
+        {
+            parser.Parse();
+            dict = parser.KeyValuePairs;
+            groups = parser.Groups;
+        }
+
     }
 }
