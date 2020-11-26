@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Security;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace KeyValueConfig
 {
@@ -27,7 +28,7 @@ namespace KeyValueConfig
 
         }
 
-        public void Parse()
+        public Task Parse()
         {
             currentGroup = null;
             KeyValuePairs = new Dictionary<string, string>();
@@ -45,7 +46,7 @@ namespace KeyValueConfig
                     //primitive parsing for attributes
                     if (line.StartsWith('[') && line.EndsWith(']'))
                     {
-                        // parse as attrib
+                        ParseAsAttribute(line);
                     }
                     else
                     {
@@ -54,9 +55,10 @@ namespace KeyValueConfig
                 }
 
             }
+            return Task.CompletedTask;
         }
 
-        private void ParseAsKeyValue(string line)
+        private Task ParseAsKeyValue(string line)
         {
             string[] splitLine = line.Split('=', 2);
 
@@ -78,24 +80,27 @@ namespace KeyValueConfig
                 KeyValuePairs.Add(key, value);
                 AddToCurrentGroup(key, value);
             }
+            return Task.CompletedTask;
         }
 
-        private void AddToCurrentGroup(string key, string value)
+        private Task AddToCurrentGroup(string key, string value)
         {
             if (currentGroup != null)
             {
                 currentGroup.Add(key, value);
             }
+            return Task.CompletedTask;
         }
 
-        private void ParseAsAttribute(string line)
+        private Task ParseAsAttribute(string line)
         {
             //remove begginning [ and ending ]
             line = new string(line.Skip(1).ToArray());
             line = new string(line.Take(line.Length - 1).ToArray());
 
             //remove whitespace
-            line.Replace(" ", "");
+            line = line.Replace(" ", "");
+
             string[] splitLine = line.Split(':', 2);
 
             if (splitLine.Length != 2)
@@ -119,9 +124,10 @@ namespace KeyValueConfig
             {
                 ThrowConfigException("Unknown attribute token");
             }
+            return Task.CompletedTask;
         }
 
-        internal void ThrowConfigException(string message)
+        internal Task ThrowConfigException(string message)
         {
             throw new InvalidConfigException($"Line {currentLine}: {message}");
         }
