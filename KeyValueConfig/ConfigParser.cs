@@ -27,7 +27,7 @@ namespace KeyValueConfig
 
         }
 
-        public Dictionary<string, string> Parse()
+        public void Parse()
         {
             currentGroup = null;
             KeyValuePairs = new Dictionary<string, string>();
@@ -54,7 +54,6 @@ namespace KeyValueConfig
                 }
 
             }
-            return KeyValuePairs;
         }
 
         private void ParseAsKeyValue(string line)
